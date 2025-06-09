@@ -102,41 +102,147 @@ export default function MathCurriculumPlanner() {
         <head>
           <title>${selectedClassData.className} 진도 계획표</title>
           <style>
-            body { font-family: 'Malgun Gothic', sans-serif; margin: 20px; }
-            h1 { text-align: center; color: #333; }
-            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-            th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-            th { background-color: #f5f5f5; font-weight: bold; }
-            .subject { font-weight: bold; color: #2563eb; }
-            .chapter { color: #dc2626; }
+            @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+            
+            body {
+              font-family: 'Noto Sans KR', sans-serif;
+              margin: 0;
+              padding: 40px;
+              background-color: #f8fafc;
+              color: #1e293b;
+            }
+            
+            .container {
+              max-width: 1000px;
+              margin: 0 auto;
+              background: white;
+              padding: 40px;
+              border-radius: 16px;
+              box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            }
+            
+            .header {
+              text-align: center;
+              margin-bottom: 40px;
+              padding-bottom: 20px;
+              border-bottom: 2px solid #e2e8f0;
+            }
+            
+            h1 {
+              font-size: 28px;
+              font-weight: 700;
+              color: #1e40af;
+              margin: 0 0 8px 0;
+            }
+            
+            .subtitle {
+              font-size: 16px;
+              color: #64748b;
+              margin: 0;
+            }
+            
+            table {
+              width: 100%;
+              border-collapse: separate;
+              border-spacing: 0;
+              margin-top: 20px;
+            }
+            
+            th {
+              background-color: #f1f5f9;
+              padding: 16px;
+              text-align: left;
+              font-weight: 500;
+              color: #475569;
+              border-bottom: 2px solid #e2e8f0;
+            }
+            
+            td {
+              padding: 16px;
+              border-bottom: 1px solid #e2e8f0;
+              vertical-align: top;
+            }
+            
+            tr:last-child td {
+              border-bottom: none;
+            }
+            
+            .week {
+              font-weight: 500;
+              color: #1e40af;
+            }
+            
+            .subject {
+              font-weight: 500;
+              color: #2563eb;
+              background-color: #eff6ff;
+              padding: 4px 8px;
+              border-radius: 4px;
+              display: inline-block;
+            }
+            
+            .chapter {
+              font-weight: 500;
+              color: #dc2626;
+              background-color: #fef2f2;
+              padding: 4px 8px;
+              border-radius: 4px;
+              display: inline-block;
+            }
+            
+            .details {
+              color: #64748b;
+              font-size: 14px;
+            }
+            
+            @media print {
+              body {
+                background: white;
+                padding: 0;
+              }
+              
+              .container {
+                box-shadow: none;
+                padding: 20px;
+              }
+              
+              .header {
+                margin-bottom: 20px;
+              }
+            }
           </style>
         </head>
         <body>
-          <h1>${selectedClassData.className} 주차별 진도 계획표</h1>
-          <table>
-            <thead>
-              <tr>
-                <th>주차</th>
-                <th>과목</th>
-                <th>단원</th>
-                <th>세부 내용</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${selectedClassData.weeks
-                .map(
-                  (week) => `
+          <div class="container">
+            <div class="header">
+              <h1>${selectedClassData.className} 진도 계획표</h1>
+              <p class="subtitle">총 ${selectedClassData.weeks.length}주차 계획</p>
+            </div>
+            <table>
+              <thead>
                 <tr>
-                  <td>${week.week}주차</td>
-                  <td class="subject">${week.subject}</td>
-                  <td class="chapter">${week.chapter}</td>
-                  <td>${week.details}</td>
+                  <th>주차</th>
+                  <th>과목</th>
+                  <th>단원</th>
+                  <th>세부 내용</th>
                 </tr>
-              `,
-                )
-                .join("")}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                ${selectedClassData.weeks
+                  .map(
+                    (week) => `
+                  <tr>
+                    <td class="week">${week.week}주차</td>
+                    <td><span class="subject">${week.subject}</span></td>
+                    <td><span class="chapter">${week.chapter}</span></td>
+                    <td class="details">${week.details || "-"}</td>
+                  </tr>
+                `,
+                  )
+                  .join("")}
+              </tbody>
+            </table>
+          </div>
         </body>
       </html>
     `
