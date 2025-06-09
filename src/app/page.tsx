@@ -150,7 +150,7 @@ export default function MathCurriculumPlanner() {
   const selectedClassData = classes.find((cls) => cls.id === selectedClass)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-4">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
@@ -164,9 +164,9 @@ export default function MathCurriculumPlanner() {
           {/* 반 관리 및 진도 입력 */}
           <div className="space-y-6">
             {/* 새 반 추가 */}
-            <Card>
+            <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
               <CardHeader>
-                <CardTitle>반 관리</CardTitle>
+                <CardTitle className="text-xl">반 관리</CardTitle>
                 <CardDescription>새로운 반을 추가하고 관리하세요</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -176,8 +176,9 @@ export default function MathCurriculumPlanner() {
                     value={newClassName}
                     onChange={(e) => setNewClassName(e.target.value)}
                     onKeyPress={(e) => e.key === "Enter" && addNewClass()}
+                    className="flex-1"
                   />
-                  <Button onClick={addNewClass}>
+                  <Button onClick={addNewClass} className="bg-blue-600 hover:bg-blue-700">
                     <Plus className="h-4 w-4" />
                   </Button>
                 </div>
@@ -187,13 +188,13 @@ export default function MathCurriculumPlanner() {
                     <div key={cls.id} className="flex items-center gap-1">
                       <Badge
                         variant={selectedClass === cls.id ? "default" : "secondary"}
-                        className="cursor-pointer"
+                        className="cursor-pointer hover:opacity-80 transition-opacity"
                         onClick={() => setSelectedClass(cls.id)}
                       >
                         {cls.className}
                       </Badge>
-                      <Button size="sm" variant="ghost" onClick={() => removeClass(cls.id)} className="h-6 w-6 p-0">
-                        <Trash2 className="h-3 w-3" />
+                      <Button size="sm" variant="ghost" onClick={() => removeClass(cls.id)} className="h-6 w-6 p-0 hover:bg-red-100">
+                        <Trash2 className="h-3 w-3 text-red-500" />
                       </Button>
                     </div>
                   ))}
@@ -203,9 +204,9 @@ export default function MathCurriculumPlanner() {
 
             {/* 주차별 진도 입력 */}
             {selectedClass && (
-              <Card>
+              <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <CardHeader>
-                  <CardTitle>주차별 진도 입력</CardTitle>
+                  <CardTitle className="text-xl">주차별 진도 입력</CardTitle>
                   <CardDescription>{selectedClassData?.className}의 진도를 추가하세요</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -248,45 +249,46 @@ export default function MathCurriculumPlanner() {
                     </div>
                   </div>
 
-                  <div>
-                    <Label htmlFor="subject">과목</Label>
-                    <Select
-                      value={newWeek.subject}
-                      onValueChange={(value) => setNewWeek({ ...newWeek, subject: value, chapter: "" })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="과목 선택" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.keys(mathSubjects).map((subject) => (
-                          <SelectItem key={subject} value={subject}>
-                            {subject}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {newWeek.subject && (
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="chapter">단원</Label>
+                      <Label htmlFor="subject">과목</Label>
                       <Select
-                        value={newWeek.chapter}
-                        onValueChange={(value) => setNewWeek({ ...newWeek, chapter: value })}
+                        value={newWeek.subject}
+                        onValueChange={(value) => setNewWeek({ ...newWeek, subject: value, chapter: "" })}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="단원 선택" />
+                          <SelectValue placeholder="과목 선택" />
                         </SelectTrigger>
                         <SelectContent>
-                          {mathSubjects[newWeek.subject as keyof typeof mathSubjects].map((chapter) => (
-                            <SelectItem key={chapter} value={chapter}>
-                              {chapter}
+                          {Object.keys(mathSubjects).map((subject) => (
+                            <SelectItem key={subject} value={subject}>
+                              {subject}
                             </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                     </div>
-                  )}
+                    {newWeek.subject && (
+                      <div>
+                        <Label htmlFor="chapter">단원</Label>
+                        <Select
+                          value={newWeek.chapter}
+                          onValueChange={(value) => setNewWeek({ ...newWeek, chapter: value })}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="단원 선택" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {mathSubjects[newWeek.subject as keyof typeof mathSubjects].map((chapter) => (
+                              <SelectItem key={chapter} value={chapter}>
+                                {chapter}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+                  </div>
 
                   <div>
                     <Label htmlFor="details">세부 내용</Label>
@@ -295,10 +297,11 @@ export default function MathCurriculumPlanner() {
                       placeholder="세부 학습 내용 (선택사항)"
                       value={newWeek.details}
                       onChange={(e) => setNewWeek({ ...newWeek, details: e.target.value })}
+                      className="w-full"
                     />
                   </div>
 
-                  <Button onClick={addWeeklyPlan} className="w-full">
+                  <Button onClick={addWeeklyPlan} className="w-full bg-blue-600 hover:bg-blue-700">
                     진도 추가
                   </Button>
                 </CardContent>
@@ -309,47 +312,51 @@ export default function MathCurriculumPlanner() {
           {/* 진도 계획표 미리보기 */}
           <div>
             {selectedClassData && (
-              <Card>
+              <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <CardHeader className="flex flex-row items-center justify-between">
                   <div>
-                    <CardTitle>{selectedClassData.className} 진도 계획표</CardTitle>
+                    <CardTitle className="text-xl">{selectedClassData.className} 진도 계획표</CardTitle>
                     <CardDescription>총 {selectedClassData.weeks.length}주차 계획</CardDescription>
                   </div>
-                  <Button onClick={exportToPrint} variant="outline" size="sm">
+                  <Button onClick={exportToPrint} variant="outline" size="sm" className="hover:bg-blue-50">
                     <Download className="h-4 w-4 mr-2" />
                     인쇄/저장
                   </Button>
                 </CardHeader>
                 <CardContent>
                   {selectedClassData.weeks.length > 0 ? (
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>주차</TableHead>
-                          <TableHead>과목</TableHead>
-                          <TableHead>단원</TableHead>
-                          <TableHead>세부내용</TableHead>
-                          <TableHead className="w-12"></TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {selectedClassData.weeks.map((week, index) => (
-                          <TableRow key={index}>
-                            <TableCell className="font-medium">{week.month}월 {week.week}주차</TableCell>
-                            <TableCell>
-                              <Badge variant="outline">{week.subject}</Badge>
-                            </TableCell>
-                            <TableCell className="text-red-600 font-medium">{week.chapter}</TableCell>
-                            <TableCell className="text-sm text-gray-600">{week.details || "-"}</TableCell>
-                            <TableCell>
-                              <Button size="sm" variant="ghost" onClick={() => removeWeeklyPlan(selectedClass, index)}>
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            </TableCell>
+                    <div className="rounded-lg overflow-hidden border border-gray-200">
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="bg-gray-50 hover:bg-gray-50">
+                            <TableHead className="font-semibold">주차</TableHead>
+                            <TableHead className="font-semibold">과목</TableHead>
+                            <TableHead className="font-semibold">단원</TableHead>
+                            <TableHead className="font-semibold">세부내용</TableHead>
+                            <TableHead className="w-12"></TableHead>
                           </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                        </TableHeader>
+                        <TableBody>
+                          {selectedClassData.weeks.map((week, index) => (
+                            <TableRow key={index} className="hover:bg-gray-50">
+                              <TableCell className="font-medium">{week.month}월 {week.week}주차</TableCell>
+                              <TableCell>
+                                <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                                  {week.subject}
+                                </Badge>
+                              </TableCell>
+                              <TableCell className="text-red-600 font-medium">{week.chapter}</TableCell>
+                              <TableCell className="text-sm text-gray-600">{week.details || "-"}</TableCell>
+                              <TableCell>
+                                <Button size="sm" variant="ghost" onClick={() => removeWeeklyPlan(selectedClass, index)} className="hover:bg-red-100">
+                                  <Trash2 className="h-4 w-4 text-red-500" />
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
                   ) : (
                     <div className="text-center py-8 text-gray-500">아직 진도가 추가되지 않았습니다.</div>
                   )}
@@ -358,7 +365,7 @@ export default function MathCurriculumPlanner() {
             )}
 
             {!selectedClass && classes.length === 0 && (
-              <Card>
+              <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <CardContent className="text-center py-12">
                   <BookOpen className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">시작하기</h3>
@@ -368,7 +375,7 @@ export default function MathCurriculumPlanner() {
             )}
 
             {!selectedClass && classes.length > 0 && (
-              <Card>
+              <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <CardContent className="text-center py-12">
                   <h3 className="text-lg font-medium text-gray-900 mb-2">반을 선택하세요</h3>
                   <p className="text-gray-500">위에서 반을 선택하여 진도 계획을 확인하거나 추가하세요.</p>
