@@ -11,7 +11,6 @@ import { Trash2, Plus, Download, BookOpen } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 
 interface WeeklyPlan {
-  month: number
   week: number
   subject: string
   chapter: string
@@ -25,11 +24,13 @@ interface ClassPlan {
 }
 
 const mathSubjects = {
-  "수학 I": ["지수와 로그", "삼각함수", "수열"],
-  "수학 II": ["함수의 극한과 연속", "미분", "적분"],
+  "공통수학1": ["다항식", "방정식과 부등식", "경우의 수", "행렬"],
+  "공통수학2": ["도형의 방정식", "집합과 명제", "함수"],  
+  "수학I": ["지수함수와 로그함수", "삼각함수", "수열"],
+  "수학II": ["함수의 극한과 연속", "미분", "적분"],
   "확률과 통계": ["경우의 수", "확률", "통계"],
-  미적분: ["수열의 극한", "함수의 극한과 연속", "다항함수의 미분법", "초월함수의 미분법", "적분법"],
-  기하: ["이차곡선", "평면벡터", "공간도형과 공간좌표"],
+  "미적분": ["수열의 극한", "미분법", "적분법"],
+  "기하": ["이차곡선", "평면벡터", "공간도형과 공간좌표"],
 }
 
 export default function MathCurriculumPlanner() {
@@ -37,7 +38,6 @@ export default function MathCurriculumPlanner() {
   const [newClassName, setNewClassName] = useState("")
   const [selectedClass, setSelectedClass] = useState<string>("")
   const [newWeek, setNewWeek] = useState<WeeklyPlan>({
-    month: 1,
     week: 1,
     subject: "",
     chapter: "",
@@ -67,7 +67,6 @@ export default function MathCurriculumPlanner() {
         ),
       )
       setNewWeek({
-        month: newWeek.month,
         week: newWeek.week + 1,
         subject: "",
         chapter: "",
@@ -128,7 +127,7 @@ export default function MathCurriculumPlanner() {
                 .map(
                   (week) => `
                 <tr>
-                  <td>${week.month}월 ${week.week}주차</td>
+                  <td>${week.week}주차</td>
                   <td class="subject">${week.subject}</td>
                   <td class="chapter">${week.chapter}</td>
                   <td>${week.details}</td>
@@ -211,60 +210,33 @@ export default function MathCurriculumPlanner() {
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="month">월</Label>
-                      <Select
-                        value={newWeek.month.toString()}
-                        onValueChange={(value) => setNewWeek({ ...newWeek, month: Number(value) })}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="월 선택" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((month) => (
-                            <SelectItem key={month} value={month.toString()}>
-                              {month}월
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <Label htmlFor="week">주차</Label>
+                      <Input
+                        id="week"
+                        type="number"
+                        min="1"
+                        value={newWeek.week}
+                        onChange={(e) => setNewWeek({ ...newWeek, week: Number.parseInt(e.target.value) || 1 })}
+                      />
                     </div>
                     <div>
-                      <Label htmlFor="week">주차</Label>
+                      <Label htmlFor="subject">과목</Label>
                       <Select
-                        value={newWeek.week.toString()}
-                        onValueChange={(value) => setNewWeek({ ...newWeek, week: Number(value) })}
+                        value={newWeek.subject}
+                        onValueChange={(value) => setNewWeek({ ...newWeek, subject: value, chapter: "" })}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="주차 선택" />
+                          <SelectValue placeholder="과목 선택" />
                         </SelectTrigger>
                         <SelectContent>
-                          {[1, 2, 3, 4, 5].map((week) => (
-                            <SelectItem key={week} value={week.toString()}>
-                              {week}주차
+                          {Object.keys(mathSubjects).map((subject) => (
+                            <SelectItem key={subject} value={subject}>
+                              {subject}
                             </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                     </div>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="subject">과목</Label>
-                    <Select
-                      value={newWeek.subject}
-                      onValueChange={(value) => setNewWeek({ ...newWeek, subject: value, chapter: "" })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="과목 선택" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.keys(mathSubjects).map((subject) => (
-                          <SelectItem key={subject} value={subject}>
-                            {subject}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
                   </div>
 
                   {newWeek.subject && (
@@ -335,7 +307,7 @@ export default function MathCurriculumPlanner() {
                       <TableBody>
                         {selectedClassData.weeks.map((week, index) => (
                           <TableRow key={index}>
-                            <TableCell className="font-medium">{week.month}월 {week.week}주차</TableCell>
+                            <TableCell className="font-medium">{week.week}주차</TableCell>
                             <TableCell>
                               <Badge variant="outline">{week.subject}</Badge>
                             </TableCell>
