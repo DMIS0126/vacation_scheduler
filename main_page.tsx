@@ -113,86 +113,138 @@ export default function MathCurriculumPlanner() {
             }
             
             .container {
-              max-width: 1000px;
+              max-width: 900px;
               margin: 0 auto;
               background: white;
-              padding: 40px;
-              border-radius: 16px;
-              box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+              padding: 48px;
+              border-radius: 24px;
+              box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
             }
             
             .header {
               text-align: center;
-              margin-bottom: 40px;
-              padding-bottom: 20px;
-              border-bottom: 2px solid #e2e8f0;
+              margin-bottom: 48px;
+              padding-bottom: 24px;
+              border-bottom: 3px solid #e2e8f0;
+              position: relative;
+            }
+            
+            .header::after {
+              content: '';
+              position: absolute;
+              bottom: -3px;
+              left: 50%;
+              transform: translateX(-50%);
+              width: 100px;
+              height: 3px;
+              background: linear-gradient(90deg, #2563eb, #1e40af);
             }
             
             h1 {
-              font-size: 28px;
+              font-size: 36px;
               font-weight: 700;
               color: #1e40af;
-              margin: 0 0 8px 0;
+              margin: 0 0 16px 0;
+              letter-spacing: -0.5px;
+              text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
             }
             
             .subtitle {
-              font-size: 16px;
+              font-size: 18px;
               color: #64748b;
               margin: 0;
+              font-weight: 500;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 8px;
+            }
+            
+            .subtitle::before,
+            .subtitle::after {
+              content: '';
+              width: 40px;
+              height: 1px;
+              background: #e2e8f0;
             }
             
             table {
               width: 100%;
               border-collapse: separate;
               border-spacing: 0;
-              margin-top: 20px;
+              margin-top: 32px;
+              border-radius: 16px;
+              overflow: hidden;
+              box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+              background: white;
             }
             
             th {
-              background-color: #f1f5f9;
-              padding: 16px;
+              background: linear-gradient(to bottom, #f8fafc, #f1f5f9);
+              padding: 20px;
               text-align: left;
-              font-weight: 500;
-              color: #475569;
+              font-weight: 600;
+              color: #334155;
               border-bottom: 2px solid #e2e8f0;
+              font-size: 15px;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
             }
             
             td {
-              padding: 16px;
+              padding: 20px;
               border-bottom: 1px solid #e2e8f0;
-              vertical-align: top;
+              vertical-align: middle;
+              font-size: 15px;
+              transition: all 0.2s ease;
             }
             
             tr:last-child td {
               border-bottom: none;
             }
             
+            tr:hover td {
+              background-color: #f8fafc;
+            }
+            
             .week {
-              font-weight: 500;
+              font-weight: 600;
               color: #1e40af;
+              font-size: 16px;
+              background: linear-gradient(135deg, #eff6ff, #dbeafe);
+              padding: 8px 16px;
+              border-radius: 8px;
+              display: inline-block;
+              box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
             }
             
             .subject {
-              font-weight: 500;
+              font-weight: 600;
               color: #2563eb;
-              background-color: #eff6ff;
-              padding: 4px 8px;
-              border-radius: 4px;
+              background: linear-gradient(135deg, #eff6ff, #dbeafe);
+              padding: 8px 16px;
+              border-radius: 8px;
               display: inline-block;
+              font-size: 15px;
+              box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
             }
             
             .chapter {
-              font-weight: 500;
+              font-weight: 600;
               color: #dc2626;
-              background-color: #fef2f2;
-              padding: 4px 8px;
-              border-radius: 4px;
+              background: linear-gradient(135deg, #fef2f2, #fee2e2);
+              padding: 8px 16px;
+              border-radius: 8px;
               display: inline-block;
+              font-size: 15px;
+              box-shadow: 0 2px 4px rgba(220, 38, 38, 0.1);
             }
             
             .details {
-              color: #64748b;
-              font-size: 14px;
+              color: #475569;
+              font-size: 15px;
+              line-height: 1.6;
+              padding: 8px 0;
             }
             
             @media print {
@@ -203,11 +255,35 @@ export default function MathCurriculumPlanner() {
               
               .container {
                 box-shadow: none;
-                padding: 20px;
+                padding: 24px;
+                max-width: 100%;
               }
               
               .header {
-                margin-bottom: 20px;
+                margin-bottom: 24px;
+              }
+              
+              .header::after {
+                display: none;
+              }
+              
+              .subtitle::before,
+              .subtitle::after {
+                display: none;
+              }
+              
+              table {
+                box-shadow: none;
+              }
+              
+              tr:hover td {
+                background-color: transparent;
+              }
+              
+              .week,
+              .subject,
+              .chapter {
+                box-shadow: none;
               }
             }
           </style>
